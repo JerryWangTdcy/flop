@@ -121,10 +121,12 @@ export default {
 <style lang="stylus" scoped>
 .home 
   padding 20px
-* {
-  margin: 0;
-  padding: 0;
-}
+  width 100vw
+  height 100vh
+  background url('../assets/images/bg.png')
+  background-size cover
+  overflow hidden
+  box-sizing border-box
 ul,
 li {
   list-style: none;
@@ -136,7 +138,7 @@ li {
   grid: auto-flow / 1fr 1fr 1fr
   gap 10px
   position fixed
-  top 40%
+  top 50%
   left 50%
   transform translate(-50%, -50%)
   .flip-container 
