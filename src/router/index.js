@@ -16,6 +16,11 @@ const routes = [
     component: () => import('../views/ScrapeOff.vue')
   },
   {
+    path: '/turntable',
+    name: 'Turntable',
+    component: () => import('../views/Turntable.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting

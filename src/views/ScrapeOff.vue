@@ -1,78 +1,30 @@
 <template>
   <div class="main">
     <!-- <canvas id="tutorial"></canvas> -->
+    <div class="back">
+      <img src="https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/bg.png" />
+      <img src="https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/ticket.png" class="ticket-bg" alt="">
+    </div>
     <canvas id="ticket"></canvas>
     <!-- <img :src="url" alt=""> -->
   </div>
 </template>
 <script>
+import ScrapAward from '../utils/ScrapAward'
 export default {
   data() {
     return {
-      fileslist: [require('../assets/images/scrapeoff/bg.png'), require('../assets/images/scrapeoff/bg1.jpg'), require('../assets/images/scrapeoff/bg2.png'), require('../assets/images/scrapeoff/ticket.png')],
-      // fileslist: ['https://teming.oss-cn-shanghai.aliyuncs.com/web/daochujihuozhuangtai.png', 'https://teming.oss-cn-shanghai.aliyuncs.com/web/daochujihuozhuangtai.png', 'https://teming.oss-cn-shanghai.aliyuncs.com/web/daochujihuozhuangtai.png', 'https://teming.oss-cn-shanghai.aliyuncs.com/web/daochujihuozhuangtai.png'],
-      ticket: [require('../assets/images/scrapeoff/prize-bg.jpg'),require('../assets/images/scrapeoff/shave-layer.jpg')]
+      fileslist: ['https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/bg.png', 'https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/ticket.png'],
+      ticket: ['https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/prize-bg.jpg','https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/shave-layer1.jpg']
     }
   },
   mounted() {
-    this.drawTicket()
+    this.init()
     document.body.addEventListener('touchmove', function (e) {
       e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
     }, {passive: false}); //passive 参数不能省略，用来兼容ios和android
   },
   methods: {
-    drawBg() {
-      let img1 = new Image(),
-      img2 = new Image(),
-      img3 = new Image(),
-      img4 = new Image()
-      img1.src = this.fileslist[0]
-      img2.src = this.fileslist[1]
-      img3.src = this.fileslist[2]
-      img4.src = this.fileslist[3]
-
-      // 加载img1
-      let pm1 = new Promise((res)=>{
-        img1.onload = ()=>{
-          res();
-        }
-      });
-      // 加载img2
-      let pm2 = new Promise((res)=>{
-        img2.onload = ()=>{
-          res();
-        }
-      });
-      // 加载img3
-      let pm3 = new Promise((res)=>{
-        img3.onload = ()=>{
-          res();
-        }
-      });
-      // 加载img4
-      let pm4 = new Promise((res)=>{
-        img4.onload = ()=>{
-          res();
-        }
-      });
-      let dpr1 =  window.innerWidth / img1.width
-      let dpr2 =  window.innerWidth / img2.width
-      let dpr3 =  window.innerWidth / img3.width
-      let dpr4 =  img4.width / 750
-      // 两张图片都加载完成后绘制于Canva中
-      Promise.all([pm1, pm2, pm3, pm4]).then(()=>{
-        let canvas = document.getElementById('tutorial')
-        let ctx = canvas.getContext('2d')
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-        ctx.drawImage(img2, 0, 0, img2.width * dpr2, img2.height * dpr2);
-        ctx.drawImage(img3, 0, 0, img3.width * dpr3, img3.height * dpr3);
-        ctx.drawImage(img1, 0, 0, img1.width * dpr1, img1.height * dpr1);
-        ctx.drawImage(img4, (window.innerWidth - window.innerWidth * dpr4) / 2 , img1.height * dpr1 - (img4.height * window.innerWidth / img4.width / 2), window.innerWidth * dpr4, img4.height * window.innerWidth / img4.width);
-      });
-      this.drawTicket()
-      // drawAllImg()
-    },
     drawTicket() {
       let canvas = document.getElementById('ticket')
       let ctx = canvas.getContext('2d')
@@ -85,7 +37,7 @@ export default {
       model = new Image(),
       img1 = new Image()
       model.src = this.fileslist[0]
-      model.src = this.fileslist[3]
+      model.src = this.fileslist[1]
       img.src = this.ticket[0]
       img1.src = this.ticket[1]
       // 加载img1
@@ -134,20 +86,67 @@ export default {
         console.log('抬起事件')
       }
       // drawAllImg1()
+    },
+    init() {
+      let _widht = window.innerWidth
+      let _height = window.innerHeight
+      var scrapAward = new ScrapAward({
+        canvasId: 'ticket',
+        width: _widht,
+        height: _height,
+        backgroundImageUrl: 'https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/prize-bg.jpg',
+        coverImage: {
+            url: 'https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/shave-layer1.jpg',
+            width: 352,
+            height: 150,
+        },
+        callback: () => {
+            alert('刮奖结束');
+            setTimeout(() => {
+              scrapAward.restart()
+            }, 2000)
+            
+        }
+      })
+      // scrapAward().init()
     }
   }
 }
 </script>
 <style lang="stylus" scoped>
 .main
+  width 100vw
   height 100vh
+  background url('https://wincode-game.oss-cn-shanghai.aliyuncs.com/scrape/bg1.jpg')
+  background-size 100% auto
+  overflow hidden
+  box-sizing border-box
   position relative
+  z-index 1
+  .back
+    position relative
+    width 100vw
+    z-index 2
+    top 0
+    img 
+      width 100%
+      height auto
+    .ticket-bg 
+      width 342px
+      box-sizing border-box
+      position absolute
+      bottom -50px
+      left 50%
+      transform translateX(-50%)
+      img 
+        width 100%
+        height auto
   #tutorial 
     position relative
     z-index 1
   #ticket 
     position absolute
-    top 0
-    left 0
+    top 395px
+    left 28px
     z-index 999
 </style>
