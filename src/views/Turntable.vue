@@ -7,6 +7,7 @@
       <div class="turntabl-wrapper">
         <img class="turntable-bg" src="../assets/images/turntable/turntable-bg.png" alt="">
         <img class="turntable" src="../assets/images/turntable/turntable.png" alt="">
+        <img class="start" src="../assets/images/turntable/pointer.png" alt="">
       </div>
       <div class="prize-list">
         <div class="prize">
@@ -100,6 +101,13 @@ export default {
         left 50%
         transform translate(-50%, -50%)
         z-index 3
+      .start
+        width 140px
+        position absolute
+        top 35%
+        left 50%
+        transform translate(-50%, -35%)
+        z-index 10
     .prize-list 
       width 313px
       height 313px
@@ -121,8 +129,10 @@ export default {
         position absolute
         display flex
         align-items center
+        // background yellow
         justify-content center
         transform-origin right bottom
+        z-index 5
         for $i in 1..6
           &:nth-child({$i})
             transform rotate($i * 60deg) skew(30deg)
@@ -131,11 +141,12 @@ export default {
               width 80px
               height 80px
               position absolute
-              // left 10px
-              top 78px
+              left 35%
+              top 35%
               // transform translateY(-50%)
               img
-                width 100%
+                width 80px
+                height 80px
     .prize-wrapper
       width 313px
       height 313px
@@ -149,13 +160,19 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      border-radius 50%
+      overflow hidden
       .prize
         width 156px
         height 156px
         left 0
         top 0
+        // background blue
         position absolute
+        border-right 1px solid
+        border-image url(../assets/images/turntable/border.png) 1 stretch
         transform-origin right bottom
+        z-index 6
         for $i in 1..6
           &:nth-child({$i})
             transform rotate($i * 60deg) skew(30deg)
